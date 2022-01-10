@@ -29,7 +29,7 @@ def scrape_data(database_scrape:database_scrape):
     productSoup = bs(productPage.content,'html.parser')
 
     productNames = productSoup.find_all('span', id='productTitle')
-    if productNames != '':
+    if len(productNames) > 0:
         productNames = productNames[0].get_text().strip()
         
     ids = ['priceblock_dealprice', 'priceblock_ourprice', 'tp_price_block_total_price_ww', 'apexPriceToPay']
