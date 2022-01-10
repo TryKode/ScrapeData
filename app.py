@@ -56,10 +56,10 @@ def scrape_data(database_scrape:database_scrape):
     if len(productRating) > 0:
         productRating = productRating[0].get_text().strip()
 
-    productImg = productSoup.find_all('img', alt=productNames)
-    if len(productImg) > 0:
-        productImg = productImg[0]['data-a-dynamic-image']
-        productImg = json.loads(productImg)
+    # productImg = productSoup.find_all('img', alt=productNames)
+    # if len(productImg) > 0:
+    #    productImg = productImg[0]['data-a-dynamic-image']
+    #    productImg = json.loads(productImg)
 
     productFeatures = productSoup.find_all('div', id='feature-bullets')
     if len(productFeatures) > 0:
