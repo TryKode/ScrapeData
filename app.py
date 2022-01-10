@@ -114,7 +114,7 @@ def scrape_data(database_scrape:database_scrape):
             'productDiscountPrice' : productDiscountPrice,
             'productActualPrice' : productActualPrice,
             'productRating' : productRating,
-            'productImg' : productImg,
+            'productImg' : 'productImg',
             'productFeatures' : productFeatures,
             'productSpecs' : productSpecs,
             'productDetails' : productDetails,
