@@ -91,6 +91,7 @@ def scrape_data(database_scrape:database_scrape):
                 temp.append( productDetails[i].strip() )
         productDetails = temp
     
+    '''
     context = productNames + '\n' + productDiscountPrice + '. ' + productActualPrice + '.\n' + productRating + '.\n' + productFeatures[0] + '-\n'
     i = 1
     while i < len(productFeatures)-1 :
@@ -103,7 +104,8 @@ def scrape_data(database_scrape:database_scrape):
         context = context + productSpecs[i]+' is '+productSpecs[i+1]+'. '
         i = i+2
     context = context[:len(context)-2] + '.\n'
-
+    '''
+    
     # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> | ', productNames, productDiscountPrice, productActualPrice, productFeatures, productSpecs, productDetails, context, sep="_-_-_-_-_")
     details = {
         'product_data' : {
@@ -116,7 +118,7 @@ def scrape_data(database_scrape:database_scrape):
             'productFeatures' : productFeatures,
             'productSpecs' : productSpecs,
             'productDetails' : productDetails,
-            'context' : context
+            'context' : 'context'
         }
     }
     return details
