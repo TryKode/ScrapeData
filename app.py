@@ -27,10 +27,14 @@ def scrape_data(database_scrape:database_scrape):
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36", "Accept-Encoding":"gzip, deflate", "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "DNT":"1","Connection":"close", "Upgrade-Insecure-Requests":"1"}
     productPage = requests.get(productURL, headers=headers)
     productSoup = bs(productPage.content,'html.parser')
+    
+    print(productSoup)
 
     productNames = productSoup.find_all('span', id='productTitle')
     if len(productNames) > 0:
         productNames = productNames[0].get_text().strip()
+    
+    print('productNames - ', productNames)
         
     ids = ['priceblock_dealprice', 'priceblock_ourprice', 'tp_price_block_total_price_ww', 'apexPriceToPay']
     for ID in ids:
@@ -42,6 +46,8 @@ def scrape_data(database_scrape:database_scrape):
         productDiscountPriceArr = productDiscountPrice.split('.')
         productDiscountPrice = 'Product Price after Discount is '+productDiscountPriceArr[0]
 
+    print('productDiscountPrice - ', productDiscountPrice)
+    
     classes = ['priceBlockStrikePriceString', 'a-text-price']
     for CLASS in classes:
         productActualPrice = productSoup.find_all('span', class_=CLASS)
@@ -52,6 +58,8 @@ def scrape_data(database_scrape:database_scrape):
         productActualPriceArr = productActualPrice.split('.')
         productActualPrice = 'Product Actual Price is ' + productActualPriceArr[0]
 
+    print('productActualPrice - ', productActualPrice)
+    
     productRating = productSoup.find_all('span', class_="a-icon-alt")
     if len(productRating) > 0:
         productRating = productRating[0].get_text().strip()
@@ -61,6 +69,8 @@ def scrape_data(database_scrape:database_scrape):
     #    productImg = productImg[0]['data-a-dynamic-image']
     #    productImg = json.loads(productImg)
 
+    print('productRating - ', productRating)
+    
     productFeatures = productSoup.find_all('div', id='feature-bullets')
     if len(productFeatures) > 0:
         productFeatures = productFeatures[0].get_text().strip()
@@ -70,6 +80,8 @@ def scrape_data(database_scrape:database_scrape):
             if productFeatures[i]!='' and productFeatures[i]!=' ' :
                 temp.append( productFeatures[i].strip() )
         productFeatures = temp
+    
+    print('productFeatures - ', productFeatures)
     
     productSpecs = productSoup.find_all('table', id='productDetails_techSpec_section_1')
     if len(productSpecs) > 0:
@@ -81,6 +93,8 @@ def scrape_data(database_scrape:database_scrape):
                 temp.append( productSpecs[i].strip() )
         productSpecs = temp
 
+    print('productSpecs - ', productSpecs)    
+     
     productDetails = productSoup.find_all('div', id='productDetails_db_sections')
     if len(productDetails) > 0:
         productDetails = productDetails[0].get_text()
@@ -91,6 +105,7 @@ def scrape_data(database_scrape:database_scrape):
                 temp.append( productDetails[i].strip() )
         productDetails = temp
     
+    print('productDetails - ', productDetails)
     '''
     context = productNames + '\n' + productDiscountPrice + '. ' + productActualPrice + '.\n' + productRating + '.\n' + productFeatures[0] + '-\n'
     i = 1
