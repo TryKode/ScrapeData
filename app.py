@@ -37,52 +37,59 @@ def scrape_data(database_scrape:database_scrape):
         productDiscountPrice = productSoup.find_all('span', id=ID)
         if len(productDiscountPrice) > 0 :
             break
-    productDiscountPrice = productDiscountPrice[0].get_text().strip()
-    productDiscountPriceArr = productDiscountPrice.split('.')
-    productDiscountPrice = 'Product Price after Discount is '+productDiscountPriceArr[0]
+    if len(productDiscountPrice) > 0:
+        productDiscountPrice = productDiscountPrice[0].get_text().strip()
+        productDiscountPriceArr = productDiscountPrice.split('.')
+        productDiscountPrice = 'Product Price after Discount is '+productDiscountPriceArr[0]
 
     classes = ['priceBlockStrikePriceString', 'a-text-price']
     for CLASS in classes:
         productActualPrice = productSoup.find_all('span', class_=CLASS)
         if productActualPrice != [] :
             break
-    productActualPrice = productActualPrice[0].get_text().strip()
-    productActualPriceArr = productActualPrice.split('.')
-    productActualPrice = 'Product Actual Price is ' + productActualPriceArr[0]
+    if len(productActualPrice) > 0 :
+        productActualPrice = productActualPrice[0].get_text().strip()
+        productActualPriceArr = productActualPrice.split('.')
+        productActualPrice = 'Product Actual Price is ' + productActualPriceArr[0]
 
     productRating = productSoup.find_all('span', class_="a-icon-alt")
-    productRating = productRating[0].get_text().strip()
+    if len(productRating) > 0:
+        productRating = productRating[0].get_text().strip()
 
     productImg = productSoup.find_all('img', alt=productNames)
-    productImg = productImg[0]['data-a-dynamic-image']
-    productImg = json.loads(productImg)
+    if len(productImg) > 0:
+        productImg = productImg[0]['data-a-dynamic-image']
+        productImg = json.loads(productImg)
 
     productFeatures = productSoup.find_all('div', id='feature-bullets')
-    productFeatures = productFeatures[0].get_text().strip()
-    productFeatures = re.split('\n|  ',productFeatures)
-    temp = []
-    for i in range(len(productFeatures)):
-        if productFeatures[i]!='' and productFeatures[i]!=' ' :
-            temp.append( productFeatures[i].strip() )
-    productFeatures = temp
+    if len(productFeatures) > 0:
+        productFeatures = productFeatures[0].get_text().strip()
+        productFeatures = re.split('\n|  ',productFeatures)
+        temp = []
+        for i in range(len(productFeatures)):
+            if productFeatures[i]!='' and productFeatures[i]!=' ' :
+                temp.append( productFeatures[i].strip() )
+        productFeatures = temp
     
     productSpecs = productSoup.find_all('table', id='productDetails_techSpec_section_1')
-    productSpecs = productSpecs[0].get_text().strip()
-    productSpecs = re.split('\n|\u200e|  ',productSpecs) 
-    temp = []
-    for i in range(len(productSpecs)):
-        if productSpecs[i]!='' and productSpecs[i]!=' ' :
-            temp.append( productSpecs[i].strip() )
-    productSpecs = temp
+    if len(productSpecs) > 0:
+        productSpecs = productSpecs[0].get_text().strip()
+        productSpecs = re.split('\n|\u200e|  ',productSpecs) 
+        temp = []
+        for i in range(len(productSpecs)):
+            if productSpecs[i]!='' and productSpecs[i]!=' ' :
+                temp.append( productSpecs[i].strip() )
+        productSpecs = temp
 
     productDetails = productSoup.find_all('div', id='productDetails_db_sections')
-    productDetails = productDetails[0].get_text()
-    productDetails = re.split('\n|  ',productDetails) 
-    temp = []
-    for i in range(len(productDetails)):
-        if productDetails[i]!='' and productDetails[i]!=' ' :
-            temp.append( productDetails[i].strip() )
-    productDetails = temp
+    if len(productDetails) > 0:
+        productDetails = productDetails[0].get_text()
+        productDetails = re.split('\n|  ',productDetails) 
+        temp = []
+        for i in range(len(productDetails)):
+            if productDetails[i]!='' and productDetails[i]!=' ' :
+                temp.append( productDetails[i].strip() )
+        productDetails = temp
     
     context = productNames + '\n' + productDiscountPrice + '. ' + productActualPrice + '.\n' + productRating + '.\n' + productFeatures[0] + '-\n'
     i = 1
@@ -100,6 +107,7 @@ def scrape_data(database_scrape:database_scrape):
     # print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> | ', productNames, productDiscountPrice, productActualPrice, productFeatures, productSpecs, productDetails, context, sep="_-_-_-_-_")
     details = {
         'product_data' : {
+            'productSoup' : productSoup,
             'productNames' : productNames,
             'productDiscountPrice' : productDiscountPrice,
             'productActualPrice' : productActualPrice,
